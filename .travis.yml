@@ -1,0 +1,11 @@
+language: generic
+branches:
+    only:
+    - master
+addons:
+    ssh_known_hosts: vps.jmgpena.net
+before_install:
+- openssl aes-256-cbc -K $encrypted_ac50d320f699_key -iv $encrypted_ac50d320f699_iv -in deploy_key.enc -out deploy_key -d
+- chmod 600 deploy_key
+after_success:
+- rsync -rv --delete --exclude '.git' -e "ssh -i deploy_key" . jmgpena@vps.jmgpena.net:~/bbbf-landing-page/
